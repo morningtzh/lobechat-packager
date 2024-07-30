@@ -20,10 +20,10 @@ jobs:
         # The branch, tag or SHA to checkout. When checking out the repository that triggered a workflow, this defaults to the reference or SHA for that event.  Otherwise, uses the default branch.
         ref: main
     - name: Debug
-      run: ls && ls */
+      run: ls && ls */ && git describe --tags `git rev-list --tags --max-count=1`
     - name: Get Latest Tag
       id: get-latest-tag
-      run: echo "::set-output version=`git describe --tags `git rev-list --tags --max-count=1`"
+      run: echo "::set-output version=`git describe --tags `git rev-list --tags --max-count=1``"
       # working-directory: lobe-chat
     - name: Checkout Tag
       run: git checkout tags/${{ steps.get-latest-tag.outputs.version }}
