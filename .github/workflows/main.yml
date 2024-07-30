@@ -53,7 +53,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
           push: true
-          file: lobechat/Dockerfile
+          context: lobechat
           secret-envs: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}, CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${{ steps.get-latest-tag.outputs.version }}
     
