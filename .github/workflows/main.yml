@@ -54,7 +54,7 @@ jobs:
         # 存储桶对外的访问域名
         envkey_NEXT_PUBLIC_S3_DOMAIN: ${{ secrets.NEXT_PUBLIC_S3_DOMAIN }}
 
-        directory: lobe-chat
+        directory: lobechat
         file_name: .env
         fail_on_empty: false
         sort_keys: false
