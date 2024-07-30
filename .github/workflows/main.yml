@@ -33,6 +33,9 @@ jobs:
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v2.0
       with:
+        # 指定服务模式为 server 
+        envkey_NEXT_PUBLIC_SERVICE_MODE: server
+        
         # Postgres 数据库 URL
         envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
         envkey_KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
