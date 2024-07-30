@@ -18,10 +18,10 @@ jobs:
     - name: Get Latest Tag
       id: get-latest-tag
       run: echo "::set-output version=`git describe --tags `git rev-list --tags --max-count=1`"
-      working-directory: lobe-chat
+      # working-directory: lobe-chat
     - name: Checkout Tag
       run: git checkout tags/${{ steps.get-latest-tag.outputs.version }}
-      working-directory: lobe-chat
+      # working-directory: lobe-chat
     # - name: Make envfile
     #   uses: SpicyPizza/create-envfile@v2.0
     #   with:
