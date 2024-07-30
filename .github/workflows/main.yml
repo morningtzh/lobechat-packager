@@ -1,8 +1,12 @@
 name: Package Lobechat
 
-on:
+on: 
+  push: 
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   schedule:
-  - cron: "0 2 * * 1-5"
+  - cron: "0 0 * * 1-5"
 
 jobs:
   build:
