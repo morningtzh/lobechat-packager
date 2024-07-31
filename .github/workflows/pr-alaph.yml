@@ -73,4 +73,6 @@ jobs:
           push: true
           context: lobechat
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:alaph-latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:alaph-${{ steps.get-latest-tag.outputs.version }}
-    
+    - name: Migrate database
+      run: npm run build-migrate-db
+      working-directory: lobechat
