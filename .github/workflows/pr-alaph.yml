@@ -30,7 +30,7 @@ jobs:
       uses: SpicyPizza/create-envfile@v2.0
       with:
         # 指定服务模式为 server 
-        #envkey_NEXT_PUBLIC_SERVICE_MODE: server
+        envkey_NEXT_PUBLIC_SERVICE_MODE: server
         
         # Postgres 数据库 URL
         envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -71,5 +71,5 @@ jobs:
       with:
           push: true
           context: lobechat
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${{ steps.get-latest-tag.outputs.version }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:alaph-${{ steps.get-latest-tag.outputs.version }}
     
