@@ -35,6 +35,7 @@ jobs:
         # Postgres 数据库 URL
         envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
         envkey_KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
+        envkey_DATABASE_DRIVER: node
         
         # Clerk 相关配置
         envkey_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
