@@ -78,11 +78,11 @@ jobs:
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
-        DATABASE_DRIVER: node
+        # DATABASE_DRIVER: node
       run: |
         npm i tsx drizzle-kit
         echo "Start push database"
-        npm run db:push
+        drizzle-kit push --dotenv_config_path='.env'
         echo "Start run database migrations"
         npm run build-migrate-db
       working-directory: lobechat
