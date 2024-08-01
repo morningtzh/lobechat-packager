@@ -69,9 +69,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Setup Node.js environment
       uses: actions/setup-node@v4.0.3
-      with:
-        cache: 'npm'
-        node-version-file: lobechat/package.json
+
     - name: Setup Bun
       # You may pin to the exact commit or the version.
       # uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5
