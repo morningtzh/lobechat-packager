@@ -79,7 +79,8 @@ jobs:
         KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
         # DATABASE_DRIVER: node
       run: |
-        npm i tsx && npm install -g drizzle-kit
+        # npm i tsx && npm install -g drizzle-kit
+        npm install
         echo "Start push database"
         drizzle-kit push --dotenv_config_path='.env'
         echo "Start run database migrations"
