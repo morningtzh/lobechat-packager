@@ -80,7 +80,7 @@ jobs:
         KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
         DATABASE_DRIVER: node
       run: |
-        npm ci && npm i tsx drizzle-kit
+        npm i tsx drizzle-kit
         echo "Start push database"
         npm run db:push
         echo "Start run database migrations"
