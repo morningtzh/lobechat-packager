@@ -67,24 +67,27 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v4.0.3
-    - name: Setup Bun
-      # You may pin to the exact commit or the version.
-      # uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5
-      uses: oven-sh/setup-bun@v2
-    - name: Run database migrations
-      env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
-        # DATABASE_DRIVER: node
-      run: |
-        # npm i tsx && npm install -g drizzle-kit
-        npm install
-        echo "Start push database"
-        drizzle-kit push --dotenv_config_path='.env'
-        echo "Start run database migrations"
-        npm run build-migrate-db
+    # - name: Setup Node.js environment
+    #   uses: actions/setup-node@v4.0.3
+    # - name: Setup Bun
+    #   # You may pin to the exact commit or the version.
+    #   # uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5
+    #   uses: oven-sh/setup-bun@v2
+    # - name: Run database migrations
+    #   env:
+    #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    #     KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
+    #     # DATABASE_DRIVER: node
+    #   run: |
+    #     # npm i tsx && npm install -g drizzle-kit
+    #     npm install
+    #     echo "Start push database"
+    #     drizzle-kit push --dotenv_config_path='.env'
+    #     echo "Start run database migrations"
+    #     npm run build-migrate-db
+    #   working-directory: lobechat
+    - name: Add command
+      run: sed -i '/RUN npm run build:docker/i RUN npm run db:push\nRUN npm run db:migrate' Dockerfile
       working-directory: lobechat
     - name: Build and push
       uses: docker/build-push-action@v6
