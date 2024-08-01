@@ -35,7 +35,7 @@ jobs:
         # Postgres 数据库 URL
         envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
         envkey_KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
-        envkey_DATABASE_DRIVER: node
+        #envkey_DATABASE_DRIVER: node
         
         # Clerk 相关配置
         envkey_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
@@ -72,7 +72,11 @@ jobs:
       # uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5
       uses: oven-sh/setup-bun@v2
     - name: Migrate database
-      run: npm i tsx && npm run --env-file=.env build-migrate-db
+      run: |
+        npm i tsx && 
+        export DATABASE_URL: ${{ secrets.DATABASE_URL }} &&
+        export KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }} &&
+        npm run build-migrate-db
       working-directory: lobechat
     - name: Build and push
       uses: docker/build-push-action@v6
