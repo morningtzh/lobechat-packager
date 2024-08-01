@@ -17,15 +17,15 @@ jobs:
         ref: feat/nextauth-server-db
         path: lobechat
         fetch-depth: 0
-    - name: Debug
-      run: ls && ls */ && cd lobechat && git describe --tags $(git rev-list --tags --max-count=1)
-    - name: Get Latest Tag
-      id: get-latest-tag
-      run: echo "version=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
-      working-directory: lobechat
-    - name: Checkout Tag
-      run: git checkout tags/${{ steps.get-latest-tag.outputs.version }}
-      working-directory: lobechat
+    # - name: Debug
+    #   run: ls && ls */ && cd lobechat && git describe --tags $(git rev-list --tags --max-count=1)
+    # - name: Get Latest Tag
+    #   id: get-latest-tag
+    #   run: echo "version=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+    #   working-directory: lobechat
+    # - name: Checkout Tag
+    #   run: git checkout tags/${{ steps.get-latest-tag.outputs.version }}
+    #   working-directory: lobechat
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v2.0
       with:
@@ -96,5 +96,5 @@ jobs:
       with:
           push: true
           context: lobechat
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:alaph-latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:alaph-${{ steps.get-latest-tag.outputs.version }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:alaph-latest #, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:alaph-${{ steps.get-latest-tag.outputs.version }}
 
