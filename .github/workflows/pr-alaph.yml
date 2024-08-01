@@ -86,8 +86,10 @@ jobs:
     #     echo "Start run database migrations"
     #     npm run build-migrate-db
     #   working-directory: lobechat
-    - name: Add command
-      run: sed -i '/RUN npm run build:docker/i RUN drizzle-kit push --dotenv_config_path=".env"\nRUN npm run db:migrate' Dockerfile
+    - name: Fix files
+      run: |
+        sed -i '/RUN npm run build:docker/i RUN npm run db:push\nRUN npm run db:migrate' Dockerfile
+        sed -i "s/drizzle-kit push -- dotenv_config_path='\.env'/drizzle-kit push --dotenv_config_path='.env'/" package.json
       working-directory: lobechat
     - name: Build and push
       uses: docker/build-push-action@v6
