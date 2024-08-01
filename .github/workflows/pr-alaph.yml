@@ -78,6 +78,8 @@ jobs:
         DATABASE_DRIVER: node
       run: |
         npm i tsx
+        echo "Start push database"
+        npm db:push
         echo "Start run database migrations"
         npm run build-migrate-db
       working-directory: lobechat
