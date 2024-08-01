@@ -72,7 +72,7 @@ jobs:
       # uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5
       uses: oven-sh/setup-bun@v2
     - name: Migrate database
-      run: npm i tsx && npm run build-migrate-db
+      run: npm i tsx && npm run --env-file=.env build-migrate-db
       working-directory: lobechat
     - name: Build and push
       uses: docker/build-push-action@v6
