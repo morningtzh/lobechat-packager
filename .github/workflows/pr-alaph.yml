@@ -88,7 +88,7 @@ jobs:
     #   working-directory: lobechat
     - name: Fix files
       run: |
-        sed -i '/RUN npm run build:docker/i RUN npm run db:push\nRUN npm run db:migrate' Dockerfile
+        sed -i '/RUN npm run build:docker/i RUN npm run db:migrate' Dockerfile
         sed -i "s/drizzle-kit push -- dotenv_config_path='\.env'/drizzle-kit push --dotenv_config_path='.env'/" package.json
       working-directory: lobechat
     - name: Build and push
