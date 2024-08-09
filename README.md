@@ -3,11 +3,11 @@
 
 通过 Github Action 获取 Lobechat 最新 tag，用于打包。
 
-在镜像构建时注入 secret，配置方式见 [使用服务端数据库部署](https://lobehub.com/zh/docs/self-hosting/advanced/server-database)，但不包含 NEXT_PUBLIC_SERVICE_MODE，该配置建议在创建容器时配置，更加灵活。
+在镜像构建时注入 secret，配置方式见 [使用服务端数据库部署](https://lobehub.com/zh/docs/self-hosting/advanced/server-database)
 
 ```
 # 指定服务模式为 server
-# NEXT_PUBLIC_SERVICE_MODE=server
+NEXT_PUBLIC_SERVICE_MODE=server
 
 # Postgres 数据库 URL
 DATABASE_URL=

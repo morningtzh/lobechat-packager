@@ -1,10 +1,13 @@
 name: Package Lobechat
 
 on: 
+  workflow_dispatch:
   push: 
     branches: [ "main" ]
   schedule:
   - cron: "0 0 * * 1-5"
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -73,6 +76,7 @@ jobs:
       with:
           push: true
           context: lobechat
+          file: ./lobechat/Dockerfile.database
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${{ steps.get-latest-tag.outputs.version }}
     
     
