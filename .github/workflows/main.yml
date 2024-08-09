@@ -76,7 +76,7 @@ jobs:
       with:
           push: true
           context: lobechat
-          file: Dockerfile.database
+          file: ./Dockerfile.database
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${{ steps.get-latest-tag.outputs.version }}
     
     
