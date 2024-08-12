@@ -31,6 +31,15 @@ jobs:
     - name: Checkout Tag
       run: git checkout tags/${{ steps.get-latest-tag.outputs.version }}
       working-directory: lobechat
+    - name: Set MY_VAR
+      if: github.event.name == 'pull_request'
+      env:
+        IMAGE_PREFIX: "alaph_"
+      run: |
+        echo "IMAGE_PREFIX is set to $IMAGE_PREFIX"
+    - name: Print MY_VAR
+      run: |
+        echo "MY_VAR is $MY_VAR"
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v2.0
       with:
@@ -77,7 +86,7 @@ jobs:
           push: true
           context: lobechat
           file: ./lobechat/Dockerfile.database
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${{ steps.get-latest-tag.outputs.version }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${IMAGE_PREFIX}latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${IMAGE_PREFIX}${{ steps.get-latest-tag.outputs.version }}
     
     
               
