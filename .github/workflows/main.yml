@@ -23,7 +23,7 @@ jobs:
         path: lobechat
         fetch-depth: 0
     - name: Debug
-      run: ls && ls */ && cd lobechat && git describe --tags $(git rev-list --tags --max-count=1) && echo ${{ github }}
+      run: ls && ls */ && cd lobechat && git describe --tags $(git rev-list --tags --max-count=1) && echo ${{ github.event_name }}
     - name: Get Latest Tag
       id: get-latest-tag
       run: echo "version=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
@@ -33,7 +33,7 @@ jobs:
       working-directory: lobechat
     - name: Set MY_VAR
       id: image-prefix
-      if: github.event.name == 'pull_request'
+      if: github.event_name == 'pull_request'
       run: echo "IMAGE_PREFIX=alaph_" >> $GITHUB_OUTPUT
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v2.0
