@@ -32,11 +32,9 @@ jobs:
       run: git checkout tags/${{ steps.get-latest-tag.outputs.version }}
       working-directory: lobechat
     - name: Set MY_VAR
+      id: image-prefix
       if: github.event.name == 'pull_request'
-      env:
-        IMAGE_PREFIX: "alaph_"
-      run: |
-        echo "IMAGE_PREFIX is set to $IMAGE_PREFIX"
+      run: echo "IMAGE_PREFIX=alaph_" >> $GITHUB_OUTPUT
     - name: Print MY_VAR
       run: |
         echo "MY_VAR is $MY_VAR"
@@ -86,7 +84,7 @@ jobs:
           push: true
           context: lobechat
           file: ./lobechat/Dockerfile.database
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${IMAGE_PREFIX}latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${IMAGE_PREFIX}${{ steps.get-latest-tag.outputs.version }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${{ steps.image-prefix.outputs.IMAGE_PREFIX }}latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${{ steps.image-prefix.outputs.IMAGE_PREFIX }}${{ steps.get-latest-tag.outputs.version }}
     
     
               
