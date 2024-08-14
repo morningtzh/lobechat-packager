@@ -23,7 +23,7 @@ jobs:
         path: lobechat
         fetch-depth: 0
     - name: Debug
-      run: ls && ls */ && cd lobechat && git describe --tags $(git rev-list --tags --max-count=1)
+      run: ls && ls */ && cd lobechat && git describe --tags $(git rev-list --tags --max-count=1) && echo ${{ github }}
     - name: Get Latest Tag
       id: get-latest-tag
       run: echo "version=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
@@ -35,9 +35,6 @@ jobs:
       id: image-prefix
       if: github.event.name == 'pull_request'
       run: echo "IMAGE_PREFIX=alaph_" >> $GITHUB_OUTPUT
-    - name: Print MY_VAR
-      run: |
-        echo "MY_VAR is $MY_VAR"
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v2.0
       with:
@@ -84,7 +81,7 @@ jobs:
           push: true
           context: lobechat
           file: ./lobechat/Dockerfile.database
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${{ steps.image-prefix.outputs.IMAGE_PREFIX }}latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:${{ steps.image-prefix.outputs.IMAGE_PREFIX }}${{ steps.get-latest-tag.outputs.version }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:t${{ steps.image-prefix.outputs.IMAGE_PREFIX }}latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:t${{ steps.image-prefix.outputs.IMAGE_PREFIX }}${{ steps.get-latest-tag.outputs.version }}
     
     
               
