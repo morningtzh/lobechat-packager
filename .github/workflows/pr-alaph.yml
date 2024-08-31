@@ -1,0 +1,100 @@
+name: Package Lobechat Alaph
+
+on: 
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        # Repository name with owner. For example, actions/checkout
+        repository: lobehub/lobe-chat
+        # The branch, tag or SHA to checkout. When checking out the repository that triggered a workflow, this defaults to the reference or SHA for that event.  Otherwise, uses the default branch.
+        ref: main
+        path: lobechat
+        fetch-depth: 0
+    - name: Debug
+      run: ls && ls */ && cd lobechat && git describe --tags $(git rev-list --tags --max-count=1)
+    - name: Get Latest Tag
+      id: get-latest-tag
+      run: echo "version=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+      working-directory: lobechat
+    - name: Checkout Tag
+      run: git checkout tags/${{ steps.get-latest-tag.outputs.version }}
+      working-directory: lobechat
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+        # 指定服务模式为 server 
+        envkey_NEXT_PUBLIC_SERVICE_MODE: server
+        
+        # Postgres 数据库 URL
+        envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        envkey_KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
+        #envkey_DATABASE_DRIVER: node
+        
+        # Clerk 相关配置
+        envkey_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        envkey_CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+        envkey_CLERK_WEBHOOK_SECRET: ${{ secrets.CLERK_WEBHOOK_SECRET }}
+        
+        # S3 相关配置
+        # S3 秘钥
+        envkey_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+        envkey_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+        
+        # 存储桶的名称
+        envkey_S3_BUCKET: ${{ secrets.S3_BUCKET }}
+        # 存储桶的请求端点
+        envkey_S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+        # 存储桶对外的访问域名
+        envkey_NEXT_PUBLIC_S3_DOMAIN: ${{ secrets.NEXT_PUBLIC_S3_DOMAIN }}
+
+        directory: lobechat
+        file_name: .env
+        fail_on_empty: false
+        sort_keys: false
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4.0.3
+    - name: Setup Bun
+      # You may pin to the exact commit or the version.
+      # uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5
+      uses: oven-sh/setup-bun@v2
+    - name: Run database migrations
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        KEY_VAULTS_SECRET: ${{ secrets.KEY_VAULTS_SECRET }}
+        # DATABASE_DRIVER: node
+      run: |
+        # npm i tsx && npm install -g drizzle-kit
+        npm install
+        echo "Start push database"
+        drizzle-kit push --dotenv_config_path='.env'
+        echo "Start run database migrations"
+        npm run build-migrate-db
+      working-directory: lobechat
+    # - name: Fix files
+    #   run: |
+    #     sed -i '/RUN npm run build:docker/i RUN npm run db:migrate' Dockerfile
+    #     sed -i "s/drizzle-kit push -- dotenv_config_path='\.env'/drizzle-kit push --dotenv_config_path='.env'/" package.json
+    #   working-directory: lobechat
+    - name: Build and push
+      uses: docker/build-push-action@v6
+      with:
+          push: true
+          context: lobechat
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:alaph-latest, ${{ secrets.DOCKERHUB_USERNAME }}/lobechat:alaph-${{ steps.get-latest-tag.outputs.version }}
+
