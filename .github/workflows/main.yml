@@ -61,7 +61,6 @@ jobs:
         # 存储桶的请求端点
         envkey_S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
         # 存储桶对外的访问域名
-        envkey_NEXT_PUBLIC_S3_DOMAIN: ${{ secrets.NEXT_PUBLIC_S3_DOMAIN }}
         envkey_S3_PUBLIC_DOMAIN: ${{ secrets.NEXT_PUBLIC_S3_DOMAIN }}
 
         directory: lobechat
