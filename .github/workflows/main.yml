@@ -77,7 +77,7 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Debug2
-      run: cat .env
+      run: cat ./lobechat/.env
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
