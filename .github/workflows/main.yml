@@ -40,7 +40,7 @@ jobs:
       with:
         # 指定服务模式为 server 
         envkey_NEXT_PUBLIC_SERVICE_MODE: server
-        envkey_NEXT_PUBLIC_ENABLE_NEXT_AUTH: 0
+        envkey_NEXT_PUBLIC_ENABLE_NEXT_AUTH: false
         
         # Postgres 数据库 URL
         envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
